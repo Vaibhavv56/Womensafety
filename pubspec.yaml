@@ -1,6 +1,8 @@
 name: sanrakshaa
-description: "A new Flutter project."
+description: "A new Flutter project for women's safety."
+
 publish_to: 'none'
+
 version: 0.1.0
 
 environment:
@@ -9,7 +11,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.0 # (if you use SVG assets)
+
+  # Firebase core and authentication
+  # firebase_core: ^2.0.0
+  # firebase_auth: ^5.0.0
+
+  # Optional: Google Sign-In (if you plan to use Google authentication)
+  google_sign_in: ^5.0.0
+  circular_countdown_timer: ^0.2.4
+  # Optional: Flutter SVG support for handling vector assets
+  flutter_svg: ^2.0.0
+  firebase_core: ^3.8.1
 
 dev_dependencies:
   flutter_test:
@@ -18,4 +30,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  # Ensure your image directory is correctly structured
+
+
+  # Optional: Include fonts if custom fonts are used
+  # fonts:
+  #   - family: Roboto
+  #     fonts:
+  #       - asset: assets/fonts/Roboto-Regular.ttf
+  #       - asset: assets/fonts/Roboto-Bold.ttf
+  #         weight: 700

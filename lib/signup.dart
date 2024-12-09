@@ -2,111 +2,126 @@ import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
-  SignUpPageState createState() => SignUpPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  String? _selectedGender;
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Page Title
-            Text(
-              'Sanrakshaa',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 30),
-            // Name TextField
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            // Top rounded design with Back Button
+            Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(100),
+                      bottomRight: Radius.circular(100),
+                    ),
+                  ),
                 ),
-                labelText: 'Enter Name',
-                hintText: 'Enter Name',
-                filled: true,
-                fillColor: Colors.white,
-              ),
-            ),
-            SizedBox(height: 20),
-            // Phone Number TextField
-            TextField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context); // Navigate back to the previous page
+                    },
+                  ),
                 ),
-                labelText: 'Enter Phone Number',
-                hintText: 'Enter Phone Number',
-                filled: true,
-                fillColor: Colors.white,
-              ),
+              ],
             ),
-            SizedBox(height: 20),
-            // Gender Dropdown
-            DropdownButtonFormField<String>(
-              value: _selectedGender,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            const SizedBox(height: 20),
+            // Login form
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Sanrakshaa",
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      // Name TextField
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          hintText: "Enter Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your name";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      // Password TextField
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Enter Password",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter your password";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      // Login Button
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // Navigate to the Home screen if validation passes
+                            Navigator.pushNamed(context, '/home');
+                          }
+                        },
+                        child: const Text(
+                          "Login",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                labelText: 'Gender',
-                filled: true,
-                fillColor: Colors.white,
-              ),
-              items: ['Male', 'Female']
-                  .map((gender) => DropdownMenuItem(
-                        value: gender,
-                        child: Text(gender),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedGender = value;
-                });
-              },
-            ),
-            SizedBox(height: 30),
-            // Get OTP Button
-            ElevatedButton(
-              onPressed: () {
-                // Handle Get OTP Logic
-                if (_nameController.text.isEmpty ||
-                    _phoneController.text.isEmpty ||
-                    _selectedGender == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please fill all fields')),
-                  );
-                  return;
-                }
-                // Navigate or show OTP screen
-                print("Name: ${_nameController.text}");
-                print("Phone: ${_phoneController.text}");
-                print("Gender: $_selectedGender");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 60),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: Text(
-                'GET OTP',
-                style: TextStyle(fontSize: 16),
               ),
             ),
           ],
